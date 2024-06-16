@@ -18,6 +18,39 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  /* display: none; */
+  /* Initially hide the scrollbar */
+}
+
+/* Show scrollbar when hovered */
+/* ::-webkit-scrollbar:hover {
+    display: block;
+} */
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(114, 113, 113);
+  border-radius: 10px;
+  height: auto;
+}
+
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
 /* a {
   font-weight: 500;
   color: #646cff;
