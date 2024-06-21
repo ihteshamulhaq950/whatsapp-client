@@ -4,7 +4,8 @@ import { Link } from "react-router-dom"
 
 const chatprofilelist = () => {
     return (
-        <div className="h-full px-3 py-4 overflow-y-scroll">
+        // px - 3 py - 4 overflow - y - scroll overflow - x - hidden h - [100 %]
+        <div className="px-3 py-4 overflow-x-hidden  overflow-y-scroll max-h-screen">
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
 
                 <li className="py-3 sm:py-4 text-gray-900 dark:text-white">

@@ -4,7 +4,7 @@ import audio from "/10secondaudio.mp3";
 const ChatRoomBox = () => {
 
     return (
-        <div className="bg-white dark:bg-neutral-800 h-screen w-full">
+        <div className="bg-white dark:bg-neutral-800  overflow-y-scroll overflow-x-hidden max-h-screen w-full">
 
             {/* Chatbox Navbar */}
 
