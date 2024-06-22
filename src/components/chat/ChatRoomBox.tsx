@@ -1,17 +1,11 @@
 import React from "react";
 import avatar1 from "/avatar.jpg";
-import audio from "/10secondaudio.mp3";
+// import audio from "/10secondaudio.mp3";
 
 
-import TextArea from "./TextArea";
-import SendAirplaneButton from "../SendAirplaneButton";
-import AttachmentButton from "../AttachmentButton";
 
-import ChatMessageBubble from "./ChatMessageBubble";
-import VoiceChatBubble from "./VoiceChatBubble";
-import ImageChatBubble from "./ImageChatBubble";
-import GalleryChatBubble from "../GalleryChatBubble";
-import FileAttachmentChat from "./FileAttachmentChat";
+import InputChatBar from "./InputChatBar";
+import ChatBubble from "./ChatBubble";
 
 const ChatRoomBox: React.FC = () => {
 
@@ -54,110 +48,88 @@ const ChatRoomBox: React.FC = () => {
             {/* Chat body */}
             <div className="p-6">
                 {/* Chat bubble */}
-                <ChatMessageBubble
+
+
+
+                {/* receiver chat */}
+                <ChatBubble
+                    chatType="text"
                     avatar={avatar1}
-                    senderName="Bonnie Green"
-                    message="That's awesome. I think our users will really appreciate the improvements."
-                    timestamp="11:46"
+                    senderName="Amir"
+                    message="Hi, I hope you will be in a great form of your health"
                     status="Delivered"
+                    timestamp="12:00"
+
                 />
 
-                <ChatMessageBubble
+                {/* sender chat */}
+                <ChatBubble
+                    chatType="text"
                     avatar={avatar1}
-                    senderName="Bonnie Green"
-                    message="That's awesome. I think our users will really appreciate the improvements."
-                    timestamp="11:46"
+                    senderName="Ihtesham"
+                    message="Hi, I hope you will be in a great form of your health"
                     status="Delivered"
-                    isSentByMe={true}
-                />
-
-
-                <VoiceChatBubble
-                    avatar={avatar1}
-                    senderName="Bonnie Green"
-                    duration="3:42"
-                    timestamp="11:46"
-                    status="Delivered"
-                />
-
-                <VoiceChatBubble
-                    avatar={avatar1}
-                    senderName="Bonnie Green"
-                    duration="3:42"
-                    timestamp="11:46"
-                    status="Delivered"
+                    timestamp="12:00"
                     isSentByMe={true}
 
                 />
 
-
-                {/* Example with audio */}
-                <VoiceChatBubble
+                {/* receiver image */}
+                <ChatBubble
+                    chatType="image"
                     avatar={avatar1}
-                    senderName="Bonnie Green"
-                    duration="3:42"
-                    timestamp="11:46"
-                    status="Delivered"
-                    audioFile={audio}
-                />
-
-
-                {/* Example with audio send by me */}
-                <VoiceChatBubble
-                    avatar={avatar1}
-                    senderName="Bonnie Green"
-                    duration="3:42"
-                    timestamp="11:46"
-                    status="Delivered"
-                    isSentByMe={true}
-                    audioFile={audio}
-                />
-
-
-                <ImageChatBubble
-                    avatar={avatar1}
-                    senderName="Bonnie Green"
-                    message="This is the new office 3"
+                    senderName="Ihtesham"
                     imageUrl={avatar1}
-                    timestamp="11:46"
+                    status="Delivered"
+                    timestamp="01:00"
+                    message="Hi "
+
                 />
 
-                <ImageChatBubble
+
+                {/* sender image */}
+                <ChatBubble
+                    chatType="image"
                     avatar={avatar1}
-                    senderName="Bonnie Green"
-                    message="This is the new office 3"
+                    senderName="Ihtesham"
                     imageUrl={avatar1}
-                    timestamp="11:46"
+                    status="Delivered"
+                    timestamp="01:00"
+                    message="Hi "
                     isSentByMe={true}
+
                 />
 
 
-                {/* receiver Gallery image sends */}
-                <GalleryChatBubble
+
+                {/* receiver gallery */}
+                <ChatBubble
+                    chatType="gallery"
                     avatar={avatar1}
                     senderName="Bonnie Green"
                     message="This is new office pictures"
                     images={[avatar1, avatar1, avatar1, avatar1]}
                     timestamp="11:46"
+                    status="Delivered"
 
                 />
 
-
-                {/* sender Gallery image sends */}
-                <GalleryChatBubble
+                {/* sender gallery */}
+                <ChatBubble
+                    chatType="gallery"
                     avatar={avatar1}
                     senderName="Bonnie Green"
                     message="This is new office pictures"
                     images={[avatar1, avatar1, avatar1, avatar1]}
                     isSentByMe={true}
                     timestamp="11:46"
+                    status="Delivered"
 
                 />
 
-
-
-                {/* File attachment receiver*/}
-                <FileAttachmentChat
+                {/* receiver file */}
+                <ChatBubble
+                    chatType="file"
                     avatar={avatar1}
                     senderName="Bonnie Green"
                     fileName="Flowbite Terms & conditions."
@@ -165,55 +137,29 @@ const ChatRoomBox: React.FC = () => {
                     fileSize="18"
                     fileType="PDF"
                     timestamp="11:46"
+                    status="Delivered"
                 />
-                {/* File attachment receiver */}
 
 
-
-                {/* File attachment sender*/}
-                <FileAttachmentChat
+                {/* sender chat */}
+                <ChatBubble
+                    chatType="file"
                     avatar={avatar1}
                     senderName="Bonnie Green"
                     fileName="Flowbite Terms & conditions."
                     pages={12}
                     fileSize="18"
                     fileType="PDF"
-                    timestamp="11:46"
                     isSentByMe={true}
+                    timestamp="11:46"
+                    status="Delivered"
                 />
-                {/* File attachment sender */}
-
-
-
                 {/* Chat Body ends */}
             </div>
             {/* Chat body ends */}
 
 
-            <div className="sticky bottom-0 left-0 right-0 bg-gray-100 dark:bg-neutral-800/95  border-t border-neutral-600 p-4 flex space-x-2 items-center mx-1 shadow-md">
-                {/* Attachment Icon */}
-                <div>
-                    <AttachmentButton
-                        className="p-2 rounded-full hover:bg-gray-200"
-                    />
-                </div>
-
-                {/* Chat Input */}
-                <TextArea
-                    name="name"
-                    id="name"
-                    className='flex-1 resize-none outline-none py-2 px-3 focus:outline-none text-sm tracking-tighter rounded-sm dark:bg-black'
-                    placeholder='Type a message...'
-                />
-
-                {/* Send Button */}
-                <div>
-                    <SendAirplaneButton
-                        className="p-2 rounded-full"
-                    />
-
-                </div>
-            </div>
+            <InputChatBar />
             {/* Chatroom  ends */}
         </div>
     );
