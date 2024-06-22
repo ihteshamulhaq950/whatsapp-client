@@ -1,10 +1,17 @@
 import React from 'react';
 import avatar1 from "/avatar.jpg";
+import { Link } from 'react-router-dom';
 
 const ChatBoxNavbar: React.FC = () => {
     return (
         <div className="sticky top-0 left-0 z-10 bg-neutral-200 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-100 w-full py-3 ps-5 pe-8 flex items-center justify-between space-x-2 border-b border-b-neutral-500">
             <div className="flex items-start space-x-3">
+                <Link to={"/"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7  lg:hidden inline-flex justify-center items-center p-2 hover:bg-slate-700 rounded-full ">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                </Link>
+
                 <img
                     className="w-8 h-8 rounded-full ring-1 ring-black"
                     src={avatar1}
@@ -13,9 +20,9 @@ const ChatBoxNavbar: React.FC = () => {
                 <h3>Amir</h3>
             </div>
 
-            <div className="flex space-x-3">
+            <div className="flex items-center space-x-3">
                 {/* Camera */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
 
