@@ -52,12 +52,22 @@ const ChatPage: React.FC = () => {
         );
     };
 
+    // const handleUserCheck = (name: string) => {
+    //     setSelectedUsers((prevSelectedUsers) => {
+    //         if (prevSelectedUsers.includes(name)) {
+    //             return prevSelectedUsers.filter((user) => user !== name);
+    //         } else {
+    //             return [...prevSelectedUsers, name];
+    //         }
+    //     });
+    // };
+
     const handleUserRemove = (name: string) => {
         setSelectedUsers((prevSelectedUsers) => prevSelectedUsers.filter((user) => user != name)
         );
     };
 
-    console.log('isNewChatAndGroupOrFilter is:', isNewChatAndGroupOrFilter);
+    // console.log('isNewChatAndGroupOrFilter is:', isNewChatAndGroupOrFilter);
 
     console.log('selectedUser array is:', selectedUsers);
 
@@ -127,7 +137,7 @@ const ChatPage: React.FC = () => {
                 {/* ChatProfileList Navbar */}
                 <div className="flex justify-between items-center p-3 bg-white text-neutral-800 dark:bg-neutral-800 dark:text-white">
                     <h1 className="font-bold text-xl">Chats</h1>
-                    <p className="flex">
+                    <div className="flex">
                         {/* new chats/new groups icon */}
                         <div className="relative">
                             {/* new chats/new groups icon */}
@@ -215,7 +225,14 @@ const ChatPage: React.FC = () => {
 
                                 className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[330px] overflow-y-auto z-10 ${isNewChatAndGroupOrFilter === 'newGroup' ? 'block' : 'hidden'}`}
                             >
-                                <h1 className="text-lg font-semibold mb-4">Create Group</h1>
+                                <div className="flex items-center">
+                                    <p onClick={() => setIsNewChatAndGroupOrFilter("newChat")}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 inline-flex mb-3 me-2 -ms-3 p-1 rounded-full hover:bg-neutral-700 cursor-pointer">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                        </svg>
+                                    </p>
+                                    <h1 className="text-lg font-semibold mb-4">Create Group</h1>
+                                </div>
 
                                 <div className="">
                                     {selectedUsers.map((user) => (
@@ -236,9 +253,12 @@ const ChatPage: React.FC = () => {
                                 <h3 className="text-md font-semibold text-neutral-700 dark:text-white px-3 py-1 mb-2 border-b border-neutral-500">All contacts</h3>
 
                                 <div>
-                                    <label htmlFor="checkbox1">
+                                    <label htmlFor="checkbox1"
+
+                                    >
                                         <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
                                             onClick={() => handleUserCheck('Ali')}
+                                        // key={'checkbox1'}
                                         >
                                             <div className="flex items-start space-x-3">
 
@@ -251,10 +271,10 @@ const ChatPage: React.FC = () => {
                                             <input
                                                 className="inline-flex justify-end h-5 w-5"
                                                 type="checkbox"
-                                                checked={selectedUsers.includes('Ali')}
                                                 readOnly
-                                                name=""
-                                                id="checkbox1" />
+                                                checked={selectedUsers.includes('Ali')}
+
+                                            />
 
                                         </div>
                                     </label>
@@ -262,6 +282,7 @@ const ChatPage: React.FC = () => {
                                     <label htmlFor="checkbox2">
                                         <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
                                             onClick={() => handleUserCheck('Amna')}
+
                                         >
                                             <div className="flex items-start space-x-3">
 
@@ -274,10 +295,10 @@ const ChatPage: React.FC = () => {
                                             <input
                                                 className="inline-flex justify-end h-5 w-5"
                                                 type="checkbox"
-                                                checked={selectedUsers.includes('Amna')}
                                                 readOnly
-                                                name=""
-                                                id="checkbox2" />
+                                                checked={selectedUsers.includes('Amna')}
+
+                                            />
 
                                         </div>
                                     </label>
@@ -297,10 +318,10 @@ const ChatPage: React.FC = () => {
                                             <input
                                                 className="inline-flex justify-end h-5 w-5"
                                                 type="checkbox"
-                                                checked={selectedUsers.includes('Hashim')}
                                                 readOnly
-                                                name=""
-                                                id="checkbox3" />
+                                                checked={selectedUsers.includes('Hashim')}
+
+                                            />
 
                                         </div>
                                     </label>
@@ -320,10 +341,9 @@ const ChatPage: React.FC = () => {
                                             <input
                                                 className="inline-flex justify-end h-5 w-5"
                                                 type="checkbox"
-                                                checked={selectedUsers.includes('Usman')}
                                                 readOnly
-                                                name=""
-                                                id="checkbox4" />
+                                                checked={selectedUsers.includes('Usman')}
+                                            />
 
                                         </div>
                                     </label>
@@ -340,13 +360,24 @@ const ChatPage: React.FC = () => {
                                                 <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white flex justify-between">Ihtesham
                                                 </p>
                                             </div>
+                                            {/* //!! Remember using <input
+                                                //!! className="inline-flex justify-end h-5  w-5"
+                                                //!! type="checkbox"
+                                                //!! readyOnly
+                                                //!! checked={selectedUsers.includes('Ihtesham')}
+                                                //!! 
+                                                // !! name=""
+                                                //!! id={"checkbox1"}
+                                                
+                                                */}
+
                                             <input
                                                 className="inline-flex justify-end h-5 w-5"
                                                 type="checkbox"
-                                                checked={selectedUsers.includes('Ihtesham')}
                                                 readOnly
-                                                name=""
-                                                id="checkbox5" />
+                                                checked={selectedUsers.includes('Ihtesham')}
+
+                                            />
 
                                         </div>
                                     </label>
@@ -363,7 +394,7 @@ const ChatPage: React.FC = () => {
                         </svg>
 
 
-                    </p>
+                    </div>
 
                 </div>
 
