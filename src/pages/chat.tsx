@@ -1,13 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ChatProfileList from "../components/chat/ChatProfileList"
 import { Outlet, useMatch } from "react-router";
+import ParentNewChatPopup from "../components/popups/ParentNewChatPopup";
+import ChildNewGroupPopup from "../components/popups/ChildNewGroupPopup";
+import { EditChatIcon } from "../components/icons/EditChatIcon";
+import { ChatFilterIcon } from "../components/icons/ChatFilterIcon";
+import SearchIcon from "../components/icons/SearchIcon";
 
 
 
 const ChatPage: React.FC = () => {
     const [isNewChatAndGroupOrFilter, setIsNewChatAndGroupOrFilter] = useState<string>('')
+    const [newGroupOpen, setNewGroupOpen] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState(false);
-    const popupRef = useRef<HTMLDivElement>(null);
+    // const popupRef = useRef<HTMLDivElement>(null);
 
 
     const [selectedUsers, setSelectedUsers] = useState<string[]>([])
@@ -52,26 +58,17 @@ const ChatPage: React.FC = () => {
         );
     };
 
-    // const handleUserCheck = (name: string) => {
-    //     setSelectedUsers((prevSelectedUsers) => {
-    //         if (prevSelectedUsers.includes(name)) {
-    //             return prevSelectedUsers.filter((user) => user !== name);
-    //         } else {
-    //             return [...prevSelectedUsers, name];
-    //         }
-    //     });
-    // };
 
     const handleUserRemove = (name: string) => {
         setSelectedUsers((prevSelectedUsers) => prevSelectedUsers.filter((user) => user != name)
         );
     };
 
-    // console.log('isNewChatAndGroupOrFilter is:', isNewChatAndGroupOrFilter);
 
-    console.log('selectedUser array is:', selectedUsers);
-
-
+    useEffect(() => {
+        console.log('setIsNewChatAndGroupOrFilter is:', isNewChatAndGroupOrFilter);
+        console.log('selectedUser array is:', selectedUsers);
+    }, [selectedUsers])
 
 
     return (
@@ -146,252 +143,31 @@ const ChatPage: React.FC = () => {
                                 onClick={() => toggleNewChat()}
                                 className="cursor-pointer"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="relative size-5 me-2">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                </svg>
-                            </div>
-                            <div ref={popupRef}
-                                className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[330px] overflow-y-auto ${isNewChatAndGroupOrFilter === 'newChat' ? 'block' : 'hidden'}`}
-                            >
-                                <h1 className="text-lg font-semibold mb-4">New Chats</h1>
-
-                                <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                    onClick={() =>
-                                        setIsNewChatAndGroupOrFilter('newGroup')
-                                    }
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                    </svg>
-                                    <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white ">New Group</p>
-
-                                </div>
-
-                                <h3 className="text-md font-semibold text-neutral-700 dark:text-white p-3 -mb-2">Frequently Contacted</h3>
-
-
-                                <div>
-                                    <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                        </svg>
-                                        <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white ">Ali</p>
-
-                                    </div>
-
-                                    <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                        </svg>
-                                        <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white ">Suleman</p>
-
-                                    </div>
-
-                                    <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                        </svg>
-                                        <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white ">Qasim</p>
-
-                                    </div>
-
-                                    <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                        </svg>
-                                        <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white ">Usman</p>
-
-                                    </div>
-
-
-                                    <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                        </svg>
-                                        <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white ">Ihtesham</p>
-
-                                    </div>
-                                </div>
+                                <EditChatIcon />
 
                             </div>
 
 
-                            <div
+                            <ParentNewChatPopup
+                                isNewChatAndGroupOrFilter={isNewChatAndGroupOrFilter}
+                                setIsNewChatAndGroupOrFilter={setIsNewChatAndGroupOrFilter}
 
-                                className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[330px] overflow-y-auto z-10 ${isNewChatAndGroupOrFilter === 'newGroup' ? 'block' : 'hidden'}`}
-                            >
-                                <div className="flex items-center">
-                                    <p onClick={() => setIsNewChatAndGroupOrFilter("newChat")}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 inline-flex mb-3 me-2 -ms-3 p-1 rounded-full hover:bg-neutral-700 cursor-pointer">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                                        </svg>
-                                    </p>
-                                    <h1 className="text-lg font-semibold mb-4">Create Group</h1>
-                                </div>
+                            />
 
-                                <div className="">
-                                    {selectedUsers.map((user) => (
-                                        // "flex items-center justify-between mb-2"
-                                        <div key={user} className="inline-flex items-center justify-between flex-wrap mx-2">
-                                            <div className="flex bg-slate-600 px-2 py-1 my-1 rounded-full">
-                                                <span className="text-neutral-800 dark:text-white text-sm me-2">{user}</span>
-                                                <button
-                                                    className="bg-red-500 text-white rounded-full px-2 py-1 text-xs"
-                                                    onClick={() => handleUserRemove(user)}
-                                                >X</button>
-                                            </div>
-
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <h3 className="text-md font-semibold text-neutral-700 dark:text-white px-3 py-1 mb-2 border-b border-neutral-500">All contacts</h3>
-
-                                <div>
-                                    <label htmlFor="checkbox1"
-
-                                    >
-                                        <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                            onClick={() => handleUserCheck('Ali')}
-                                        // key={'checkbox1'}
-                                        >
-                                            <div className="flex items-start space-x-3">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                                </svg>
-                                                <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white flex justify-between">Ali
-                                                </p>
-                                            </div>
-                                            <input
-                                                className="inline-flex justify-end h-5 w-5"
-                                                type="checkbox"
-                                                readOnly
-                                                checked={selectedUsers.includes('Ali')}
-
-                                            />
-
-                                        </div>
-                                    </label>
-
-                                    <label htmlFor="checkbox2">
-                                        <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                            onClick={() => handleUserCheck('Amna')}
-
-                                        >
-                                            <div className="flex items-start space-x-3">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                                </svg>
-                                                <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white flex justify-between">Amna
-                                                </p>
-                                            </div>
-                                            <input
-                                                className="inline-flex justify-end h-5 w-5"
-                                                type="checkbox"
-                                                readOnly
-                                                checked={selectedUsers.includes('Amna')}
-
-                                            />
-
-                                        </div>
-                                    </label>
-
-                                    <label htmlFor="checkbox3">
-                                        <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                            onClick={() => handleUserCheck('Hashim')}
-                                        >
-                                            <div className="flex items-start space-x-3">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                                </svg>
-                                                <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white flex justify-between">Hashim
-                                                </p>
-                                            </div>
-                                            <input
-                                                className="inline-flex justify-end h-5 w-5"
-                                                type="checkbox"
-                                                readOnly
-                                                checked={selectedUsers.includes('Hashim')}
-
-                                            />
-
-                                        </div>
-                                    </label>
-
-                                    <label htmlFor="checkbox4">
-                                        <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                            onClick={() => handleUserCheck('Usman')}
-                                        >
-                                            <div className="flex items-start space-x-3">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                                </svg>
-                                                <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white flex justify-between">Usman
-                                                </p>
-                                            </div>
-                                            <input
-                                                className="inline-flex justify-end h-5 w-5"
-                                                type="checkbox"
-                                                readOnly
-                                                checked={selectedUsers.includes('Usman')}
-                                            />
-
-                                        </div>
-                                    </label>
-
-                                    <label htmlFor="checkbox5">
-                                        <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                                            onClick={() => handleUserCheck('Ihtesham')}
-                                        >
-                                            <div className="flex items-start space-x-3">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                                </svg>
-                                                <p className="text-normal md:font-semibold font-medium text-neutral-800 dark:text-white flex justify-between">Ihtesham
-                                                </p>
-                                            </div>
-                                            {/* //!! Remember using <input
-                                                //!! className="inline-flex justify-end h-5  w-5"
-                                                //!! type="checkbox"
-                                                //!! readyOnly
-                                                //!! checked={selectedUsers.includes('Ihtesham')}
-                                                //!! 
-                                                // !! name=""
-                                                //!! id={"checkbox1"}
-                                                
-                                                */}
-
-                                            <input
-                                                className="inline-flex justify-end h-5 w-5"
-                                                type="checkbox"
-                                                readOnly
-                                                checked={selectedUsers.includes('Ihtesham')}
-
-                                            />
-
-                                        </div>
-                                    </label>
-
-                                </div>
-
-                            </div>
-
+                            <ChildNewGroupPopup
+                                selectedUsers={selectedUsers}
+                                setSelectedUsers={setSelectedUsers}
+                                newGroupOpen={newGroupOpen}
+                                setNewGroupOpen={setNewGroupOpen}
+                                isNewChatAndGroupOrFilter={isNewChatAndGroupOrFilter}
+                                setIsNewChatAndGroupOrFilter={setIsNewChatAndGroupOrFilter}
+                                handleUserCheck={handleUserCheck}
+                                handleUserRemove={handleUserRemove}
+                            />
                         </div>
 
                         {/* chat filter icon */}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 me-1">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-                        </svg>
+                        <ChatFilterIcon />
 
 
                     </div>
@@ -399,9 +175,7 @@ const ChatPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center bg-neutral-200 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 p-0 rounded-md w-[95%] mx-auto border border-neutral-100 border-b-green-500 border-b-4 dark:border-neutral-700 dark:border-b-green-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 ml-2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
+                    <SearchIcon />
                     <input
                         className="bg-neutral-200 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 py-1 px-2 rounded-md w-full placeholder:text-slate-400 dark:placeholder:text-neutral-500 focus:outline-none"
                         placeholder="Search or start a new chat"
