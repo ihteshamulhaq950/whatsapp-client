@@ -68,7 +68,7 @@ const ChatPage: React.FC = () => {
     useEffect(() => {
         console.log('setIsNewChatAndGroupOrFilter is:', isNewChatAndGroupOrFilter);
         console.log('selectedUser array is:', selectedUsers);
-    }, [selectedUsers])
+    }, [isNewChatAndGroupOrFilter, selectedUsers])
 
 
     return (
@@ -165,15 +165,10 @@ const ChatPage: React.FC = () => {
                                 handleUserRemove={handleUserRemove}
                             />
                         </div>
-
                         {/* chat filter icon */}
                         <ChatFilterIcon />
-
-
                     </div>
-
                 </div>
-
                 <div className="flex items-center bg-neutral-200 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 p-0 rounded-md w-[95%] mx-auto border border-neutral-100 border-b-green-500 border-b-4 dark:border-neutral-700 dark:border-b-green-500">
                     <SearchIcon />
                     <input
@@ -185,7 +180,6 @@ const ChatPage: React.FC = () => {
                 </div>
                 <ChatProfileList />
             </aside >
-
 
             <div className={`md:flex xl:ml-[29%] lg:ml-[30%]  ${isHomePage ? 'hidden' : ''} items-center justify-center h-screen bg-white text-neutral-700 dark:bg-neutral-800 dark:text-white`}>
                 <Outlet />

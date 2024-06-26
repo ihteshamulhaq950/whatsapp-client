@@ -1,6 +1,6 @@
 import ChatBox from "./components/chat/ChatBox";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ChatPage from "./pages/chat";
+import ChatPage from "./pages/chatpage";
 import ChatRoomBox from "./components/chat/ChatRoomBox";
 
 const App = () => {
