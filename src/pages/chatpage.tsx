@@ -6,69 +6,63 @@ import ChildNewGroupPopup from "../components/popups/ChildNewGroupPopup";
 import { EditChatIcon } from "../components/icons/EditChatIcon";
 import { ChatFilterIcon } from "../components/icons/ChatFilterIcon";
 import SearchIcon from "../components/icons/SearchIcon";
+import { IUser } from "../interfaces/Users";
+import { profiles } from "../seeds/Profiles";
 
 
 
 const ChatPage: React.FC = () => {
-    const [isNewChatAndGroupOrFilter, setIsNewChatAndGroupOrFilter] = useState<string>('')
+    const [isNewChatAndGroup, setIsNewChatAndGroup] = useState<string>('')
     const [newGroupOpen, setNewGroupOpen] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState(false);
     // const popupRef = useRef<HTMLDivElement>(null);
 
+    const [profilesData, setProfileData] = useState<IUser[]>([...profiles]);
+    const [selectedUsers, setSelectedUsers] = useState<IUser[]>([])
 
-    const [selectedUsers, setSelectedUsers] = useState<string[]>([])
 
     const isHomePage = useMatch("/")
     // console.log(`isHomePage:`, isHomePage);
 
-    // useEffect(() => {
-    //     const handleClickOutside = (e: MouseEvent) => {
-    //         if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
-    //             setIsNewChatAndGroupOrFilter('')
-    //         }
-    //     };
-
-    //     document.addEventListener('mousedown', handleClickOutside);
-
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-
-    // }, [popupRef])
 
     const toggleNewChat = () => {
-        if (isNewChatAndGroupOrFilter === 'newChat') {
-            setIsNewChatAndGroupOrFilter('')
-            console.log("if block isNewChatAndGroupOrFilter set to ''");
+        if (isNewChatAndGroup === 'newChat') {
+            setIsNewChatAndGroup('')
+            console.log("if block isNewChatAndGroup set to ''");
 
-        } else if (isNewChatAndGroupOrFilter === 'newGroup') {
-            setIsNewChatAndGroupOrFilter('')
-            console.log("else if block isNewChatAndGroupOrFilter set to 'newChat'");
+        } else if (isNewChatAndGroup === 'newGroup') {
+            setIsNewChatAndGroup('')
+            console.log("else if block isNewChatAndGroup set to 'newChat'");
 
         } else {
-            setIsNewChatAndGroupOrFilter('newChat')
-            console.log("else block isNewChatAndGroupOrFilter set to 'newChat'");
+            setIsNewChatAndGroup('newChat')
+            console.log("else block isNewChatAndGroup set to 'newChat'");
         }
-        // setIsNewChatAndGroupOrFilter(prev => prev === 'newChat' ? '' : 'newChat');
+        // setIsNewChatAndGroup(prev => prev === 'newChat' ? '' : 'newChat');
     };
 
 
-    const handleUserCheck = (name: string) => {
-        setSelectedUsers((prevSelectedUser) => prevSelectedUser.includes(name) ? prevSelectedUser.filter((user) => user != name) : [...prevSelectedUser, name]
+    const handleUserCheck = (checkedUser: IUser) => {
+        setSelectedUsers((prevSelectedUser) => prevSelectedUser.includes(checkedUser) ? prevSelectedUser.filter((user) => user != checkedUser) : [...prevSelectedUser, checkedUser]
         );
     };
 
 
-    const handleUserRemove = (name: string) => {
-        setSelectedUsers((prevSelectedUsers) => prevSelectedUsers.filter((user) => user != name)
+    const handleUserRemove = (removingUser: IUser) => {
+        setSelectedUsers((prevSelectedUsers) => prevSelectedUsers.filter((user) => user.name != removingUser.name)
         );
     };
 
 
     useEffect(() => {
-        console.log('setIsNewChatAndGroupOrFilter is:', isNewChatAndGroupOrFilter);
+        console.log('setIsNewChatAndGroup is:', isNewChatAndGroup);
         console.log('selectedUser array is:', selectedUsers);
-    }, [isNewChatAndGroupOrFilter, selectedUsers])
+    }, [isNewChatAndGroup, selectedUsers])
+
+    useEffect(() => {
+        console.log('profilesData is:', profilesData);
+        // setProfileData(profiles)
+    }, [profilesData])
 
 
     return (
@@ -149,8 +143,8 @@ const ChatPage: React.FC = () => {
 
 
                             <ParentNewChatPopup
-                                isNewChatAndGroupOrFilter={isNewChatAndGroupOrFilter}
-                                setIsNewChatAndGroupOrFilter={setIsNewChatAndGroupOrFilter}
+                                isNewChatAndGroup={isNewChatAndGroup}
+                                setIsNewChatAndGroup={setIsNewChatAndGroup}
 
                             />
 
@@ -159,10 +153,12 @@ const ChatPage: React.FC = () => {
                                 setSelectedUsers={setSelectedUsers}
                                 newGroupOpen={newGroupOpen}
                                 setNewGroupOpen={setNewGroupOpen}
-                                isNewChatAndGroupOrFilter={isNewChatAndGroupOrFilter}
-                                setIsNewChatAndGroupOrFilter={setIsNewChatAndGroupOrFilter}
+                                isNewChatAndGroup={isNewChatAndGroup}
+                                setIsNewChatAndGroup={setIsNewChatAndGroup}
                                 handleUserCheck={handleUserCheck}
                                 handleUserRemove={handleUserRemove}
+                                profilesData={profilesData}
+                                setProfilesData={setProfileData}
                             />
                         </div>
                         {/* chat filter icon */}
@@ -178,7 +174,7 @@ const ChatPage: React.FC = () => {
                         name="search"
                     />
                 </div>
-                <ChatProfileList />
+                <ChatProfileList profilesData={profilesData} />
             </aside >
 
             <div className={`md:flex xl:ml-[29%] lg:ml-[30%]  ${isHomePage ? 'hidden' : ''} items-center justify-center h-screen bg-white text-neutral-700 dark:bg-neutral-800 dark:text-white`}>

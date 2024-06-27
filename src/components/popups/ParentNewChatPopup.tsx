@@ -3,19 +3,19 @@ import { users } from '../../seeds/Users';
 
 
 interface ParentNewChatPopupProps {
-    isNewChatAndGroupOrFilter: string;
-    setIsNewChatAndGroupOrFilter: React.Dispatch<React.SetStateAction<string>>;
+    isNewChatAndGroup: string;
+    setIsNewChatAndGroup: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ParentNewChatPopup: React.FC<ParentNewChatPopupProps> = ({ isNewChatAndGroupOrFilter, setIsNewChatAndGroupOrFilter }) => {
+const ParentNewChatPopup: React.FC<ParentNewChatPopupProps> = ({ isNewChatAndGroup, setIsNewChatAndGroup }) => {
     return (
         <div
-            className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[480px] overflow-y-auto ${isNewChatAndGroupOrFilter === 'newChat' ? 'block' : 'hidden'}`}
+            className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[480px] overflow-y-auto ${isNewChatAndGroup === 'newChat' ? 'block' : 'hidden'}`}
         >
             <h1 className="text-lg font-semibold mb-4">New Chats</h1>
             <div className="flex items-start space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
                 onClick={() =>
-                    setIsNewChatAndGroupOrFilter('newGroup')
+                    setIsNewChatAndGroup('newGroup')
                 }
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">

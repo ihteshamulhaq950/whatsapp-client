@@ -1,15 +1,21 @@
 import { Link } from "react-router-dom"
-import { Profiles } from "../../seeds/Profiles"
+// import { profiles } from "../../seeds/Profiles"
+import { IUser } from "../../interfaces/Users"
+import React from "react"
+
+interface ChatProfileListProps {
+    profilesData: IUser[]
+}
 
 
-const chatprofilelist = () => {
+const ChatProfileList: React.FC<ChatProfileListProps> = ({ profilesData }) => {
     // console.log("Profiles is:", Profiles);
 
     return (
         // px - 3 py - 4 overflow - y - scroll overflow - x - hidden h - [100 %]
         <div className="px-3 py-4 overflow-x-hidden  overflow-y-scroll h-[90%]">
             <ul className="divide-y divide-gray-200 dark:divide-gray-700 mb-2">
-                {Profiles.map((profile) => (
+                {profilesData.map((profile) => (
                     <li key={profile.name} className="py-3 sm:py-4 text-gray-900 dark:text-white">
                         <Link to={"/username"}>
                             <div className="flex items-center">
@@ -42,4 +48,4 @@ const chatprofilelist = () => {
     )
 }
 
-export default chatprofilelist
+export default ChatProfileList

@@ -1,26 +1,30 @@
 import React from 'react';
 import { users } from '../../seeds/Users';
+// import { profiles } from '../../seeds/Profiles';
+import { IUser } from '../../interfaces/Users';
 
 
 interface ChildNewGroupPopupProps {
-    selectedUsers: string[];
-    setSelectedUsers: React.Dispatch<React.SetStateAction<string[]>>;
+    selectedUsers: IUser[];
+    setSelectedUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
     newGroupOpen: boolean;
     setNewGroupOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    isNewChatAndGroupOrFilter: string;
-    setIsNewChatAndGroupOrFilter: React.Dispatch<React.SetStateAction<string>>;
-    handleUserRemove: (data: string) => void;
-    handleUserCheck: (data: string) => void;
+    isNewChatAndGroup: string;
+    setIsNewChatAndGroup: React.Dispatch<React.SetStateAction<string>>;
+    profilesData: IUser[];
+    setProfilesData: React.Dispatch<React.SetStateAction<IUser[]>>;
+    handleUserRemove: (data: IUser) => void;
+    handleUserCheck: (data: IUser) => void;
 
 }
 
-const ChildNewGroupPopup: React.FC<ChildNewGroupPopupProps> = ({ selectedUsers, setSelectedUsers, newGroupOpen, setNewGroupOpen, isNewChatAndGroupOrFilter, setIsNewChatAndGroupOrFilter, handleUserRemove, handleUserCheck }) => {
+const ChildNewGroupPopup: React.FC<ChildNewGroupPopupProps> = ({ selectedUsers, setSelectedUsers, newGroupOpen, setNewGroupOpen, isNewChatAndGroup, setIsNewChatAndGroup, profilesData, setProfilesData, handleUserRemove, handleUserCheck }) => {
     return (
         <div
-            className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[480px] overflow-y-auto z-10 ${isNewChatAndGroupOrFilter === 'newGroup' ? 'block' : 'hidden'}`}
+            className={`absolute top-8 right-0 bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 rounded-md shadow-lg p-4 w-64 h-[480px] overflow-y-auto z-10 ${isNewChatAndGroup === 'newGroup' ? 'block' : 'hidden'}`}
         >
             <div className="flex items-center">
-                <p onClick={() => setIsNewChatAndGroupOrFilter("newChat")}>
+                <p onClick={() => setIsNewChatAndGroup("newChat")}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 inline-flex mb-3 me-2 -ms-3 p-1 rounded-full hover:bg-neutral-700 cursor-pointer">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                     </svg>
@@ -31,9 +35,9 @@ const ChildNewGroupPopup: React.FC<ChildNewGroupPopupProps> = ({ selectedUsers, 
             <div className="">
                 {selectedUsers.map((user) => (
 
-                    <div key={user} className="inline-flex items-center justify-between flex-wrap mx-2">
+                    <div key={user.id} className="inline-flex items-center justify-between flex-wrap mx-2">
                         <div className="flex bg-slate-600 px-2 py-1 my-1 rounded-full">
-                            <span className="text-neutral-800 dark:text-white text-sm me-2">{user}</span>
+                            <span className="text-neutral-800 dark:text-white text-sm me-2">{user.name}</span>
                             <button
                                 className="bg-red-500 text-white rounded-full px-2 py-1 text-xs"
                                 onClick={() => handleUserRemove(user)}
@@ -44,21 +48,26 @@ const ChildNewGroupPopup: React.FC<ChildNewGroupPopupProps> = ({ selectedUsers, 
                 ))}
 
                 {selectedUsers.length != 0 && (
-                    <div className="flex justify-start space-x-4 my-2">
-                        <button
-                            type='button'
-                            onClick={() => setNewGroupOpen(true)}
-                            className="text-lg px-5 py-1 bg-green-700 font-thin rounded-md cursor-pointer hover:bg-green-800">Create</button>
-                        <button
-                            type="button"
-                            onClick={() => setSelectedUsers([])}
-                            className="text-lg px-5 py-1 bg-gray-300 dark:bg-gray-100 border-gray-500 dark:border-gray-800 text-neutral-800 dark:hover:bg-gray-200
-                                        hover:bg-gray-400 font-thin rounded-md cursor-pointer">Cancel</button>
+                    <div className={`flex justify-start space-x-4 my-2 ${newGroupOpen === true ? 'absolute bottom-0 mx-auto' : ''}`}>
+                        {<>
+                            <button
+                                type='button'
+                                onClick={() => newGroupOpen ? setProfilesData([...profilesData, ...selectedUsers]) : setNewGroupOpen(true)}
+                                className="text-lg px-5 py-1 bg-green-700 font-thin rounded-md cursor-pointer hover:bg-green-800">
+                                {newGroupOpen ? 'Create' : 'Next'}
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => setSelectedUsers([])}
+                                className="text-lg px-5 py-1 bg-gray-300 dark:bg-gray-100 border-gray-500 dark:border-gray-800 text-neutral-800 dark:hover:bg-gray-200 hover:bg-gray-400 font-thin rounded-md cursor-pointer">Cancel</button>
+                        </>
+                        }
                     </div>
                 )}
             </div>
 
-            <h3 className="text-md font-semibold text-neutral-700 dark:text-white px-3 py-1 mb-2 border-b border-neutral-500">All contacts</h3>
+            {newGroupOpen === false && <h3 className="text-md font-semibold text-neutral-700 dark:text-white px-3 py-1 mb-2 border-b border-neutral-500">All contacts</h3>}
 
             {newGroupOpen === true &&
                 (
@@ -94,10 +103,10 @@ const ChildNewGroupPopup: React.FC<ChildNewGroupPopupProps> = ({ selectedUsers, 
                     </div>
                 )}
 
-            {isNewChatAndGroupOrFilter === 'newGroup' && newGroupOpen === false && users.map((user) => (
+            {isNewChatAndGroup === 'newGroup' && newGroupOpen === false && users.map((user) => (
                 <label key={user.id} htmlFor={user.name}>
                     <div className="flex items-center justify-between space-x-3 mb-2 py-3 px-3 hover:bg-neutral-700 hover:rounded-lg cursor-pointer"
-                        onClick={() => handleUserCheck(user.name)}
+                        onClick={() => handleUserCheck(user)}
                     >
                         <div className="flex items-start space-x-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-8 w-8 ring-4 ring-neutral-500 rounded-full inline-flex justify-center items-center p-1">
@@ -110,7 +119,7 @@ const ChildNewGroupPopup: React.FC<ChildNewGroupPopupProps> = ({ selectedUsers, 
                             className="inline-flex justify-end h-5 w-5"
                             type="checkbox"
                             readOnly
-                            checked={selectedUsers.includes(user.name)}
+                            checked={selectedUsers.includes(user)}
 
                         />
                     </div>
