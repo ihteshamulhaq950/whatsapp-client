@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import avatar1 from "/avatar.jpg";
-// import audio from "/10secondaudio.mp3";
-
-
 import ChatBoxNavbar from "./ChatBoxNavbar";
 import InputChatBar from "./InputChatBar";
 import ChatBubble from "./ChatBubble";
+import ProfileInfoPopup from "../popups/ProfileInfoPopup";
 
 const ChatRoomBox: React.FC = () => {
+    const [isProfileInfoOpen, setIsProfileInfoOpen] = useState<boolean>(false);
+
 
     return (
         <div className="bg-white dark:bg-neutral-800  overflow-y-scroll overflow-x-hidden max-h-screen w-full">
 
             {/* Chatbox Navbar */}
-            <ChatBoxNavbar />
+            <div className="relative">
+                <div
+                    className="cursor-pointer"
+                    onClick={() => setIsProfileInfoOpen((prev) => !prev)}>
+                    <ChatBoxNavbar />
+                </div>
+
+                {/* profile info. popup */}
+                <ProfileInfoPopup
+                    isProfileInfoOpen={isProfileInfoOpen}
+                // setIsProfileInfoOpen={setIsProfileInfoOpen}
+                />
+            </div>
+
+
+
 
 
             {/* Chat body */}
