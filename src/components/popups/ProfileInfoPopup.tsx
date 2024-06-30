@@ -6,7 +6,8 @@ import avatar1 from "/avatar.jpg";
 import { users } from "../../seeds/Users";
 import { profiles } from '../../seeds/Profiles';
 import { IUser } from '../../interfaces/Users';
-
+// import image from '/avatar.jpg';
+import { images } from '../../seeds/Images';
 
 interface ProfileInfoPopupProps {
     isProfileInfoOpen: boolean;
@@ -27,13 +28,19 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
     const [groupMembers, setGroupMembers] = useState<IUser[]>(users);
     const [addedGroupMembers, setAddedGroupMembers] = useState<IUser[]>([]);
 
+    // const imageArray: string[] = new Array(30).fill(image)
+
+
+    const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
+
     useEffect(() => {
         console.log(profileInfoTab);
         console.log(overviewDescription);
         console.log('addedGroupMembers is:', addedGroupMembers);
-
-
-    }, [overviewDescription, profileInfoTab, addedGroupMembers])
+        // console.log(imageArray);
+        console.log(images);
+        console.log('selectedMedia is:', selectedMedia);
+    }, [overviewDescription, profileInfoTab, addedGroupMembers, selectedMedia])
 
     const handleDescriptionClick = () => {
         if (profileDescription.trim() !== '') {
@@ -363,8 +370,36 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                             {profileInfoTab === 'media' && (
                                 <div className="h-full">
                                     <h1 className="my-2 text-lg font-semibold">Media</h1>
+                                    {images.length > 0 ? (
+                                        // flex container
+                                        <div className="grid grid-cols-3 gap-2 rounded-md mx-3"> {/* Adjust grid-cols to control number of columns */}
+                                            {images.map((imageUrl, index) => (
+                                                <div key={index} className="relative group">
+                                                    <img
+                                                        className={`rounded-md w-full border-2 border-transparent ${selectedMedia.includes(imageUrl) ? ' border-green-500 ' : ''}`}
+                                                        src={imageUrl}
+                                                        alt={`Image ${index + 1}`}
+                                                    />
+                                                    <input
 
-                                    <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No media to display</small>
+                                                        onClick={() => {
+
+                                                            setSelectedMedia((prevImgUrl) => prevImgUrl.includes(imageUrl) ? prevImgUrl.filter((prevImgUrl) => prevImgUrl != imageUrl) : [...selectedMedia, imageUrl])
+
+                                                        }}
+
+                                                        id="default-checkbox" type="checkbox" className={`absolute top-[4px] right-[4px] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ${selectedMedia.includes(imageUrl) ? 'block' : 'hidden group-hover:block'}`}
+                                                        checked={selectedMedia.includes(imageUrl)}
+                                                        readOnly
+                                                    />
+
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No media to display</small>
+                                    )}
+
                                 </div>
                             )}
 
