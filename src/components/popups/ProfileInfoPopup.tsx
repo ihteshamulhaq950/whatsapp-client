@@ -74,7 +74,7 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
     }
 
     return (
-        <div className='z-10'>
+        <div className='z-20'>
             {/* profile info. popup */}
             {isProfileInfoOpen && (
                 <div className="absolute top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
