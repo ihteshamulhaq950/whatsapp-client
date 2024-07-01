@@ -10,10 +10,12 @@ const ChatRoomBox: React.FC = () => {
 
 
     return (
-        <div className="bg-white dark:bg-neutral-800  overflow-y-scroll overflow-x-hidden max-h-screen w-full">
+        // bg - white dark: bg - neutral - 800  overflow - y - scroll overflow - x - hidden max - h - screen w - full
+        <div className="fixed top-0 bottom-0 xl:w-[calc(100%-30%)] lg:w-[calc(100%-31%)] bg-white dark:bg-neutral-800 h-full w-full">
 
             {/* Chatbox Navbar */}
-            <div className="relative">
+            {/* fixed top-0 right-0 left-96 ml-10 z-10 w-[71%] */}
+            <div className="w-full p-1">
                 <div
                     className="cursor-pointer"
                     onClick={() => setIsProfileInfoOpen((prev) => !prev)}>
@@ -32,7 +34,7 @@ const ChatRoomBox: React.FC = () => {
 
 
             {/* Chat body */}
-            <div className="p-6">
+            <div className="p-6 pt-3 pb-40 max-h-screen overflow-y-auto">
                 {/* Chat bubble */}
                 {/* receiver chat */}
                 <ChatBubble

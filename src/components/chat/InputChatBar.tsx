@@ -5,7 +5,7 @@ import SendAirplaneButton from '../inputchatcomponents/SendAirplaneButton';
 
 const InputChatBar: React.FC = () => {
     return (
-        <div className="sticky lg:bottom-0 bottom-11 left-0 right-0 bg-gray-100 dark:bg-neutral-800/95  border-t border-neutral-600 p-4 flex space-x-2 items-center mx-1 shadow-md">
+        <div className="fixed bottom-0 xl:w-[calc(100%-30%)] lg:w-[calc(100%-31%)] w-full right-0 bg-gray-100 dark:bg-neutral-800/95  border-t border-neutral-600 p-4 flex space-x-2 items-center mx-1 shadow-md">
             {/* Attachment Icon */}
             <div>
                 <AttachmentButton

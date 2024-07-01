@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { profileMetaData } from "../../seeds/ProfileMetaData";
-import { DocumentIcon, FilmIcon, LinkIcon, InformationCircleIcon, MagnifyingGlassCircleIcon, UserIcon } from "@heroicons/react/24/solid";
-import { PencilIcon, UserGroupIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { DocumentIcon, FilmIcon, LinkIcon, InformationCircleIcon, MagnifyingGlassCircleIcon, UserIcon, ArrowUturnRightIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, UserGroupIcon, ArrowLeftIcon, TrashIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import avatar1 from "/avatar.jpg";
 import { users } from "../../seeds/Users";
 import { profiles } from '../../seeds/Profiles';
 import { IUser } from '../../interfaces/Users';
 // import image from '/avatar.jpg';
 import { images } from '../../seeds/Images';
+import { DocumentDuplictateIconSolid } from '../icons/DocumentDuplictateIconSolid';
 
 interface ProfileInfoPopupProps {
     isProfileInfoOpen: boolean;
@@ -73,12 +74,12 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
     }
 
     return (
-        <div>
+        <div className='z-10'>
             {/* profile info. popup */}
             {isProfileInfoOpen && (
                 <div className="absolute top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
                     <div className="relative flex w-full h-full">
-                        <aside className="absolute top-0 left-0 w-[40%] h-full bg-neutral-800 overflow-y-auto overflow-x-hidden dark:border border-neutral-700">
+                        <aside className="absolute top-0 left-0 w-[28%] h-full bg-neutral-800 overflow-y-auto overflow-x-hidden dark:border border-neutral-700">
                             {profileMetaData.map((metaData, index) => (
                                 <div
                                     key={index}
@@ -123,7 +124,7 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                             ))}
                         </aside>
 
-                        <div className="ml-[43%] w-full h-[100%] overflow-y-auto overflow-x-hidden">
+                        <div className="ml-[31%] w-full h-[100%] overflow-y-auto overflow-x-hidden">
                             {/* <h1>Main body</h1> */}
 
                             {profileInfoTab === 'overview' && (
@@ -368,7 +369,7 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                             )}
 
                             {profileInfoTab === 'media' && (
-                                <div className="h-full">
+                                <div className="h-full relative">
                                     <h1 className="my-2 text-lg font-semibold">Media</h1>
                                     {images.length > 0 ? (
                                         // flex container
@@ -376,7 +377,7 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                                             {images.map((imageUrl, index) => (
                                                 <div key={index} className="relative group">
                                                     <img
-                                                        className={`rounded-md w-full border-2 border-transparent ${selectedMedia.includes(imageUrl) ? ' border-green-500 ' : ''}`}
+                                                        className={`rounded-md w-full border-2  ${selectedMedia.includes(imageUrl) ? ' border-blue-400 ' : 'border-transparent'}`}
                                                         src={imageUrl}
                                                         alt={`Image ${index + 1}`}
                                                     />
@@ -395,13 +396,46 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
 
                                                 </div>
                                             ))}
+
                                         </div>
                                     ) : (
                                         <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No media to display</small>
                                     )}
 
+                                    {selectedMedia.length > 0 && (
+                                        <div className='absolute bottom-2 right-0 left-0 flex justify-between w-[90%] px-4 py-2 bg-neutral-700 rounded-lg '>
+                                            <div className='flex space-x-5'>
+                                                <TrashIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
+                                                <ArrowUturnRightIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
+                                            </div>
+
+                                            <div>
+                                                {images.length === selectedMedia.length ? (
+                                                    <DocumentDuplicateIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer '
+                                                        onClick={() => setSelectedMedia([])}
+                                                    />
+                                                ) : (
+                                                    <div
+                                                        onClick={() => {
+                                                            const uniqueArray = Array.from(new Set([...selectedMedia, ...images]))
+                                                            setSelectedMedia(uniqueArray)
+                                                        }
+
+                                                        }
+                                                    >
+                                                        {/* already style its parent svg icon */}
+                                                        <DocumentDuplictateIconSolid />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+
                                 </div>
                             )}
+
+
+
 
 
                             {profileInfoTab === 'files' && (
