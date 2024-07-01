@@ -74,10 +74,10 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
     }
 
     return (
-        <div className='z-20'>
+        <div className=''>
             {/* profile info. popup */}
             {isProfileInfoOpen && (
-                <div className="absolute top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
+                <div className="absolute z-10 top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
                     <div className="relative flex w-full h-full">
                         <aside className="absolute top-0 left-0 w-[28%] h-full bg-neutral-800 overflow-y-auto overflow-x-hidden dark:border border-neutral-700">
                             {profileMetaData.map((metaData, index) => (

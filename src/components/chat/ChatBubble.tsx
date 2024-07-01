@@ -94,7 +94,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = (props) => {
                             <p className="text-sm font-normal text-gray-900 dark:text-white">{(props as ImageChatBubbleProps).message}</p>
                         )}
                         <div className="relative my-2.5">
-                            <img src={(props as ImageChatBubbleProps).imageUrl} className="rounded-lg" alt="Chat content" />
+                            <img src={(props as ImageChatBubbleProps).imageUrl} className="rounded-lg -z-10" alt="Chat content" />
                             <div className="absolute inset-0 w-full h-full bg-gray-900/50 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
                                 <button className="inline-flex items-center justify-center rounded-full h-10 w-10 bg-white/30 hover:bg-white/50 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50">
                                     <svg className="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
@@ -124,7 +124,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = (props) => {
                                             </svg>
                                         </button>
                                     </div>
-                                    <img className="rounded-lg" src={image} alt={`Image ${index + 1}`} />
+                                    <img className="rounded-lg -z-10" src={image} alt={`Image ${index + 1}`} />
                                     {index === 3 && (props as GalleryChatBubbleProps).images.length > 4 && (
                                         <div className="absolute w-full h-full bg-gray-900/90 hover:bg-gray-900/50 transition-all duration-300 rounded-lg flex items-center justify-center">
                                             <span className="text-xl font-medium text-white">+{(props as GalleryChatBubbleProps).images.length - 4}</span>
