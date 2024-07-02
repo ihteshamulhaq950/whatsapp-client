@@ -14,6 +14,14 @@ import img12 from '/thumbnail12.webp';
 import img14 from '/thumbnail14.webp';
 import img15 from '/thumbnail15.webp';
 import img16 from '/thumbnail16.webp';
+import img17 from '/beastthumbnail.webp';
+import img18 from '/buildthumbnail.webp';
+import img19 from '/chessthumbnail.webp';
+import img20 from '/claudethumbnail.webp';
+import img21 from '/crickthumbnail.webp';
+import img22 from '/devopsthumbnail.webp';
+import img23 from '/imranthumbnail.webp';
+import img24 from '/mernthumbnail.webp';
 
 
 
@@ -38,7 +46,16 @@ export const images = [
     img12,
     img14,
     img15,
-    img16
+    img16,
+    img17,
+    img18,
+    img19,
+    img20,
+    img21,
+    img22,
+    img23,
+    img24,
+
 
 
 ]

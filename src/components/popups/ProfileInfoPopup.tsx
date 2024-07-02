@@ -6,6 +6,9 @@ import avatar1 from "/avatar.jpg";
 import { users } from "../../seeds/Users";
 import { profiles } from '../../seeds/Profiles';
 import { IUser } from '../../interfaces/Users';
+import { IFiles } from '../../interfaces/Files';
+import { files } from '../../seeds/FilesData';
+import { PDFIcon } from '../icons/PDFIcon';
 // import image from '/avatar.jpg';
 import { images } from '../../seeds/Images';
 import { DocumentDuplictateIconSolid } from '../icons/DocumentDuplictateIconSolid';
@@ -33,6 +36,10 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
 
 
     const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
+
+    //files
+    const [allFiles,] = useState<IFiles[]>(files);
+    const [selectedFiles, setSelectedFiles] = useState<IFiles[]>([]);
 
     useEffect(() => {
         console.log(profileInfoTab);
@@ -78,7 +85,8 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
             {/* profile info. popup */}
             {isProfileInfoOpen && (
                 <div className="absolute z-10 top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
-                    <div className="relative flex w-full h-full">
+                    <div className=" flex w-full h-full">
+
                         <aside className="absolute top-0 left-0 w-[28%] h-full bg-neutral-800 overflow-y-auto overflow-x-hidden dark:border border-neutral-700">
                             {profileMetaData.map((metaData, index) => (
                                 <div
@@ -124,9 +132,12 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                             ))}
                         </aside>
 
-                        <div className="ml-[31%] w-full h-[100%] overflow-y-auto overflow-x-hidden">
-                            {/* <h1>Main body</h1> */}
+                        {profileInfoTab === 'media' && <h1 className="ml-[28%] absolute top-0 left-0 mb-2 ps-4 py-1 rounded-b-md text-lg font-semibold z-10 bg-neutral-800 w-[calc(100%-28%)] border-b">Media</h1>}
 
+                        {profileInfoTab === 'files' && <h1 className="ml-[28%] absolute top-0 left-0 mb-2 ps-4 py-1 rounded-b-md text-lg font-semibold z-10 bg-neutral-800 w-[calc(100%-28%)] border-b">Files</h1>}
+
+                        <div className="relative ml-[31%] w-full h-[100%] overflow-y-auto overflow-x-hidden">
+                            {/* <h1>Main body</h1> */}
                             {profileInfoTab === 'overview' && (
                                 <>
                                     <div className="flex flex-col items-center">
@@ -370,10 +381,10 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
 
                             {profileInfoTab === 'media' && (
                                 <div className="h-full relative">
-                                    <h1 className="my-2 text-lg font-semibold">Media</h1>
+                                    {/* <h1 className="absolute top-0 left-0 mb-2 ps-4 py-1 rounded-b-md text-lg font-semibold z-10 bg-neutral-600 w-full">Media</h1> */}
                                     {images.length > 0 ? (
                                         // flex container
-                                        <div className="grid grid-cols-3 gap-2 rounded-md mx-3"> {/* Adjust grid-cols to control number of columns */}
+                                        <div className="grid grid-cols-3 gap-2 rounded-md mx-3 pt-10 pb-14"> {/* Adjust grid-cols to control number of columns */}
                                             {images.map((imageUrl, index) => (
                                                 <div key={index} className="relative group">
                                                     <img
@@ -401,48 +412,57 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                                     ) : (
                                         <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No media to display</small>
                                     )}
-
-                                    {selectedMedia.length > 0 && (
-                                        <div className='absolute bottom-2 right-0 left-0 flex justify-between w-[90%] px-4 py-2 bg-neutral-700 rounded-lg '>
-                                            <div className='flex space-x-5'>
-                                                <TrashIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
-                                                <ArrowUturnRightIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
-                                            </div>
-
-                                            <div>
-                                                {images.length === selectedMedia.length ? (
-                                                    <DocumentDuplicateIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer '
-                                                        onClick={() => setSelectedMedia([])}
-                                                    />
-                                                ) : (
-                                                    <div
-                                                        onClick={() => {
-                                                            const uniqueArray = Array.from(new Set([...selectedMedia, ...images]))
-                                                            setSelectedMedia(uniqueArray)
-                                                        }
-
-                                                        }
-                                                    >
-                                                        {/* already style its parent svg icon */}
-                                                        <DocumentDuplictateIconSolid />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-
                                 </div>
                             )}
 
-
-
-
-
                             {profileInfoTab === 'files' && (
-                                <div className="h-full">
-                                    <h1 className="my-2 text-lg font-semibold">Files</h1>
-
-                                    <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No files to display</small>
+                                <div className=" relative">
+                                    {/* <h1 className="my-2 text-lg font-semibold">Files</h1> */}
+                                    {allFiles.length > 0 ? (
+                                        <div className='flex flex-col pt-10 pb-14'>
+                                            {allFiles.map((file) => (
+                                                <div key={file.id} className={`relative flex items-start mb-2 px-2 py-2 hover:bg-neutral-600 rounded-lg cursor-pointer w-[97%] border-2  ${selectedFiles.includes(file) ? 'border-blue-400' : 'border-transparent'} group`}>
+                                                    <p className='w-10 h-10 me-1'>
+                                                        {file.format === 'PDF' && (
+                                                            <PDFIcon />
+                                                        )}
+                                                    </p>
+                                                    <div className='flex flex-col leading-4'>
+                                                        <p className='text-sm font-medium text-neutral-300 line-clamp-1 pe-2 me-2'>{file.title}</p>
+                                                        <div className='flex'>
+                                                            <p className='text-xs text-neutral-400 me-3'>{file.pages} pages</p>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="self-center" width="6" height="6" viewBox="0 0 3 4" fill="none">
+                                                                <circle cx="1.5" cy="2" r="1.5" fill="#6B7280" />
+                                                            </svg>
+                                                            <p className='text-xs text-neutral-400 mx-2'>{file.size} MB</p>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="self-center" width="6" height="6" viewBox="0 0 3 4" fill="none">
+                                                                <circle cx="1.5" cy="2" r="1.5" fill="#6B7280" />
+                                                            </svg>
+                                                            <p className='text-xs text-neutral-400 ms-2'>{file.format}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <input
+                                                            onClick={() => {
+                                                                setSelectedFiles(prevFiles =>
+                                                                    prevFiles.includes(file)
+                                                                        ?
+                                                                        prevFiles.filter(prevfile => prevfile != file)
+                                                                        :
+                                                                        [...prevFiles, file])
+                                                            }}
+                                                            className={`absolute top-[0px] right-[0px] h-5 w-5 rounded-md cursor-pointer ${selectedFiles.includes(file) ? 'block' : 'hidden group-hover:block'}`}
+                                                            type="checkbox"
+                                                            readOnly
+                                                            checked={selectedFiles.includes(file)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No files to display</small>
+                                    )}
                                 </div>
                             )}
 
@@ -454,11 +474,71 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                                     <small className="w-full h-full flex items-center justify-center text-neutral-700 dark:text-neutral-400">No links to display</small>
                                 </div>
                             )}
+
+
                         </div>
+                        {selectedMedia.length > 0 && (
+                            <div className='ml-[28%] absolute bottom-0 right-0 left-0 flex justify-between w-[calc(100%-28%)] px-4 py-2 bg-neutral-800 rounded-t-lg border-t'>
+                                <div className='flex space-x-5'>
+                                    <TrashIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
+                                    <ArrowUturnRightIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
+                                </div>
+
+                                <div>
+                                    {images.length === selectedMedia.length ? (
+                                        <DocumentDuplicateIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer '
+                                            onClick={() => setSelectedMedia([])}
+                                        />
+                                    ) : (
+                                        <div
+                                            onClick={() => {
+                                                const uniqueArray = Array.from(new Set([...selectedMedia, ...images]))
+                                                setSelectedMedia(uniqueArray)
+                                            }
+
+                                            }
+                                        >
+                                            {/* already style its parent svg icon */}
+                                            <DocumentDuplictateIconSolid />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {selectedFiles.length > 0 && (
+                            <div className='ml-[28%] absolute bottom-0 right-0 left-0 flex justify-between w-[calc(100%-28%)] px-4 py-2 bg-neutral-800 rounded-t-xl border-t'>
+                                <div className='flex space-x-5'>
+                                    <TrashIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
+                                    <ArrowUturnRightIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer ' />
+                                </div>
+
+                                <div>
+                                    {allFiles.length === selectedFiles.length ? (
+                                        <DocumentDuplicateIcon className='size-6 rounded-full hover:bg-neutral-600 p-1 cursor-pointer '
+                                            onClick={() => setSelectedFiles([])}
+                                        />
+                                    ) : (
+                                        <div
+                                            onClick={() => {
+                                                const uniqueArray = Array.from(new Set([...selectedFiles, ...allFiles]))
+                                                setSelectedFiles(uniqueArray)
+                                            }
+
+                                            }
+                                        >
+                                            {/* already style its parent svg icon */}
+                                            <DocumentDuplictateIconSolid />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
 
