@@ -32,6 +32,7 @@ import img24 from '/mernthumbnail.webp';
 
 
 
+
 export const images = [
     img2,
     img3,
