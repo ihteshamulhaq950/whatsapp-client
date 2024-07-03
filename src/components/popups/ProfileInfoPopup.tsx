@@ -9,7 +9,6 @@ import { IUser } from '../../interfaces/Users';
 import { IFiles } from '../../interfaces/Files';
 import { files } from '../../seeds/FilesData';
 import { PDFIcon } from '../icons/PDFIcon';
-// import image from '/avatar.jpg';
 import { images } from '../../seeds/Images';
 import { DocumentDuplictateIconSolid } from '../icons/DocumentDuplictateIconSolid';
 
