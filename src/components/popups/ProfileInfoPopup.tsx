@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { profileMetaData } from "../../seeds/ProfileMetaData";
 import { DocumentIcon, FilmIcon, LinkIcon, InformationCircleIcon, MagnifyingGlassCircleIcon, UserIcon, ArrowUturnRightIcon } from "@heroicons/react/24/solid";
 import { PencilIcon, UserGroupIcon, ArrowLeftIcon, TrashIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
@@ -11,13 +11,18 @@ import { files } from '../../seeds/FilesData';
 import { PDFIcon } from '../icons/PDFIcon';
 import { images } from '../../seeds/Images';
 import { DocumentDuplictateIconSolid } from '../icons/DocumentDuplictateIconSolid';
+import { Link } from 'react-router-dom';
 
 interface ProfileInfoPopupProps {
     isProfileInfoOpen: boolean;
-    // setIsProfileInfoOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsProfileInfoOpen: React.Dispatch<React.SetStateAction<boolean>>
+    toggleButtonRef: React.MutableRefObject<HTMLDivElement | null>
+    // toggleDropdown: (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
-const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }) => {
+const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen, setIsProfileInfoOpen, toggleButtonRef }) => {
+
+    const profileDropdownRef = useRef<HTMLDivElement | null>(null)
     const [profileInfoTab, setProfileInfoTab] = useState<string>('overview');
 
     const [profileDescription, setProfileDescription] = useState<string>('');
@@ -30,6 +35,9 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
     const [membersToAdded,] = useState<IUser[]>(profiles)
     const [groupMembers, setGroupMembers] = useState<IUser[]>(users);
     const [addedGroupMembers, setAddedGroupMembers] = useState<IUser[]>([]);
+
+    const [profileChildPopup, setProfileChildPopup] = useState<boolean>(false);
+    const [selectedGroupMember, setSelectedGroupMember] = useState<IUser | null>(null);
 
     // const imageArray: string[] = new Array(30).fill(image)
 
@@ -48,6 +56,22 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
         console.log(images);
         console.log('selectedMedia is:', selectedMedia);
     }, [overviewDescription, profileInfoTab, addedGroupMembers, selectedMedia])
+
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handleClickOutside = (e: MouseEvent) => {
+        e.preventDefault();
+        if (profileDropdownRef.current && !profileDropdownRef.current.contains(e.target as Node) && toggleButtonRef.current && !toggleButtonRef.current.contains(e.target as Node)) {
+            setIsProfileInfoOpen(prevState => !prevState)
+        }
+    }
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [handleClickOutside])
 
     const handleDescriptionClick = () => {
         if (profileDescription.trim() !== '') {
@@ -79,11 +103,18 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
         setAddedGroupMembers((prevAddedGroupMember) => prevAddedGroupMember.filter((user) => user != removedUser))
     }
 
+
+    const handleChildPopup = (groupMember: IUser, event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        setProfileChildPopup(true)
+        setSelectedGroupMember(groupMember)
+    }
+
     return (
         <div className=''>
             {/* profile info. popup */}
             {isProfileInfoOpen && (
-                <div className="absolute z-10 top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
+                <div ref={profileDropdownRef} className="absolute z-10 top-16 left-3 md:w-[50%] w-[96%] h-[450px] bg-neutral-900 dark:border border-neutral-700 ms-0">
                     <div className=" flex w-full h-full">
 
                         <aside className="absolute top-0 left-0 w-[28%] h-full bg-neutral-800 overflow-y-auto overflow-x-hidden dark:border border-neutral-700">
@@ -360,11 +391,30 @@ const ProfileInfoPopup: React.FC<ProfileInfoPopupProps> = ({ isProfileInfoOpen }
                                                     <p>You Admin</p>
                                                 </li>
                                                 {groupMembers.map((groupMember) => (
-                                                    <li key={groupMember.id} className='flex space-x-3 my-1 text-neutral-700 dark:text-white hover:bg-neutral-600 w-[80%] cursor-pointer px-2 rounded-md'>
-                                                        <img
-                                                            className="w-7 h-7 border border-neutral-500 rounded-full p-1"
-                                                            src={groupMember.avatar} alt="" />
-                                                        <p>{groupMember.name}</p>
+                                                    <li key={groupMember.id} className='relative w-full'>
+                                                        <Link
+                                                            className='flex space-x-3 my-1 text-neutral-700 dark:text-white hover:bg-neutral-600 w-[80%] cursor-pointer px-2 rounded-md'
+                                                            to={'/usernam'}
+                                                            onContextMenu={(e) => {
+                                                                // e.preventDefault(); // Prevent the default context menu
+                                                                handleChildPopup(groupMember, e);
+                                                            }}
+                                                        >
+
+                                                            <img
+                                                                className="w-7 h-7 border border-neutral-500 rounded-full p-1"
+                                                                src={groupMember.avatar} alt="" />
+                                                            <p>{groupMember.name}</p>
+                                                        </Link>
+
+                                                        {profileChildPopup && selectedGroupMember === groupMember && (
+                                                            <div className='absolute top-9 left-3 bg-black z-[1000] border rounded-tr-xl rounded-b-xl'>
+                                                                <ul className='p-2'>
+                                                                    <li className='text-sm px-2 py-1 hover:bg-neutral-500 rounded-tr-xl rounded-b-xl text-neutral-700 dark:text-neutral-300 bg-white dark:bg-black cursor-pointer'>Open Conversation</li>
+                                                                    <li className='text-sm px-2 py-1 hover:bg-neutral-500 rounded-tr-xl rounded-b-xl text-neutral-700 dark:text-neutral-300 bg-white dark:bg-black cursor-pointer'>Remove from group</li>
+                                                                </ul>
+                                                            </div>
+                                                        )}
                                                     </li>
                                                 ))}
 

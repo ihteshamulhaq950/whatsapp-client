@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import avatar1 from "/avatar.jpg";
 import ChatBoxNavbar from "./ChatBoxNavbar";
 import InputChatBar from "./InputChatBar";
@@ -7,6 +7,17 @@ import ProfileInfoPopup from "../popups/ProfileInfoPopup";
 
 const ChatRoomBox: React.FC = () => {
     const [isProfileInfoOpen, setIsProfileInfoOpen] = useState<boolean>(false);
+    const toggleButtonRef = useRef<HTMLDivElement | null>(null)
+
+    const toggleDropdown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        setIsProfileInfoOpen(prevState => !prevState)
+    }
+
+    useEffect(() => {
+        console.log('isProfileInfoTab is:', isProfileInfoOpen);
+
+    }, [isProfileInfoOpen]);
 
 
     return (
@@ -17,15 +28,19 @@ const ChatRoomBox: React.FC = () => {
             {/* fixed top-0 right-0 left-96 ml-10 z-10 w-[71%] */}
             <div className="w-full p-1">
                 <div
+                    ref={toggleButtonRef}
                     className="cursor-pointer"
-                    onClick={() => setIsProfileInfoOpen((prev) => !prev)}>
+                    // onClick={() => setIsProfileInfoOpen((prev) => !prev)}
+                    onClick={toggleDropdown}
+                >
                     <ChatBoxNavbar />
                 </div>
 
                 {/* profile info. popup */}
                 <ProfileInfoPopup
                     isProfileInfoOpen={isProfileInfoOpen}
-                // setIsProfileInfoOpen={setIsProfileInfoOpen}
+                    setIsProfileInfoOpen={setIsProfileInfoOpen}
+                    toggleButtonRef={toggleButtonRef}
                 />
             </div>
 
